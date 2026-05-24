@@ -5,7 +5,7 @@ import { Cart } from "./JS/cart.js";
 import { GenerateProducts } from "./JS/generate.js";
 import { products } from "./JS/products.js";
 
-const cartModal = new Modal("cart-modal", "cart-button", "cartClose","cart-items");
+const cartModal = new Modal("cart-modal", "cart-button", "cartClose");
 const createProductModal = new Modal(
   "addProductModal",
   "createProductButton",
