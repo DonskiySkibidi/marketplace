@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Miranda+Sans:ital,wght@0,400..700;1,400..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+      rel="stylesheet"
+    />
+    <title>space-app</title>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <nav>
+          <ul class="types">
+            <li>Товары 18+</li>
+            <li>Apple</li>
+            <li>Игры</li>
+            <li>Техника</li>
+            <li>Прочее</li>
+          </ul>
+        </nav>
+        <div class="createProduct">
+          <button id="createProductButton">Добавить товар</button>
+        </div>
+        <div class="basket" id="cart-button">
+          <svg
+            width="800px"
+            height="800px"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3.86376 16.4552C3.00581 13.0234 2.57684 11.3075 3.47767 10.1538C4.3785 9 6.14721 9 9.68462 9H14.3153C17.8527 9 19.6214 9 20.5222 10.1538C21.4231 11.3075 20.9941 13.0234 20.1362 16.4552C19.5905 18.6379 19.3176 19.7292 18.5039 20.3646C17.6901 21 16.5652 21 14.3153 21H9.68462C7.43476 21 6.30983 21 5.49605 20.3646C4.68227 19.7292 4.40943 18.6379 3.86376 16.4552Z"
+              stroke="#1C274C"
+              stroke-width="1.5"
+            />
+            <path
+              opacity="0.5"
+              d="M19.5 9.5L18.7896 6.89465C18.5157 5.89005 18.3787 5.38775 18.0978 5.00946C17.818 4.63273 17.4378 4.34234 17.0008 4.17152C16.5619 4 16.0413 4 15 4M4.5 9.5L5.2104 6.89465C5.48432 5.89005 5.62128 5.38775 5.90221 5.00946C6.18199 4.63273 6.56216 4.34234 6.99922 4.17152C7.43808 4 7.95872 4 9 4"
+              stroke="#1C274C"
+              stroke-width="1.5"
+            />
+            <path
+              d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4C15 4.55228 14.5523 5 14 5H10C9.44772 5 9 4.55228 9 4Z"
+              stroke="#1C274C"
+              stroke-width="1.5"
+            />
+            <path
+              opacity="0.5"
+              d="M8 13V17"
+              stroke="#1C274C"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              opacity="0.5"
+              d="M16 13V17"
+              stroke="#1C274C"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              opacity="0.5"
+              d="M12 13V17"
+              stroke="#1C274C"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+      </header>
+      <main>
+        <section class="goods" id="productsGrid">
+          <!-- <div class="product">
+            <img
+              src="./src/assets/img/cf6894517fbcbad9f2749d254bf550c0.png"
+              alt="productImg"
+            />
+            <div class="product-desc">
+              <h2>Ичимару Гин</h2>
+              <h4>В наличии <span>5</span></h4>
+              <div class="toBasket">
+                <h5>2000 рублей</h5>
+                <button class="addToBasket" data-id="0">В корзину</button>
+              </div>
+            </div>
+          </div> -->
+        </section>
+      </main>
+      <footer></footer>
+    </div>
+    <div class="modal" id="cart-modal">
+      <div class="modal-content">
+        <button class="modal-close" id="cartClose">&times;</button>
+
+        <h2>Корзина товаров</h2>
+
+        <div class="cart-items" id="cart-items">
+          <!-- <div class="cart-item">
+            <img
+              src="./src/assets/img/cf6894517fbcbad9f2749d254bf550c0.png"
+              alt=""
+            />
+            <div class="item-details">
+              <h3>Ичимару Гин</h3>
+              <p>2000 руб. x 1 шт.</p>
+            </div>
+            <button class="remove-item">&times;</button>
+          </div> -->
+        </div>
+
+        <div class="cart-info">
+          <div class="cart-totals">
+            <p>Всего товаров: <span id="totalCountID">0 шт.</span></p>
+            <p>Общая стоимость: <span id="totalSumID">0 руб.</span></p>
+          </div>
+          <button class="btn-checkout">Оформить заказ</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="addProductModal">
+      <div class="modal-content">
+        <button class="modal-close" id="createProductClose">&times;</button>
+        <h2>Добавить товар</h2>
+        <form id="addProductForm">
+          <label for="product-name">Название товара:</label>
+          <input
+            type="text"
+            id="product-name"
+            name="product-name"
+            placeholder="Введите название товара"
+            required
+          />
+          <label for="product-count">Количество товара:</label>
+          <input
+            type="number"
+            id="product-count"
+            name="product-count"
+            placeholder="Введите количество товара"
+            min="0"
+            required
+          />
+
+          <label for="product-price">Цена товара:</label>
+          <input
+            min="0"
+            type="number"
+            id="product-price"
+            name="product-price"
+            placeholder="Введите цену товара"
+            required
+          />
+
+          <label for="product-image">Изображение товара:</label>
+          <input
+            type="file"
+            id="product-image"
+            name="product-image"
+            accept="image/*"
+            required
+          />
+
+          <button type="submit" id="addProduct" class="btn-checkout">
+            Добавить товар
+          </button>
+        </form>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
