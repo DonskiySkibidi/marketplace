@@ -1,12 +1,11 @@
-import { products } from "./products";
 
 export class Cart {
-  constructor(productGridID, cartItemsID, totalCountID, totalSumID, onChangeCallback) {
+  constructor(productGridID, cartItemsID, totalCountID, totalSumID, onChangeCallback, products) {
     this.goods = document.getElementById(productGridID);
     this.itemsCart = document.getElementById(cartItemsID);
     this.totalCountElem = document.getElementById(totalCountID);
     this.totalSumElem = document.getElementById(totalSumID);
-    
+    this.products = products;
     this.cart = new Map();
     this.onChangeCallback = onChangeCallback;
     this._bindClick();
@@ -14,7 +13,7 @@ export class Cart {
 
   addToCart(button) {
     const id = button.dataset.id;
-    if (!id || !products[id] || products[id].count <= 0) return;
+    if (!id || !this.products[id] || this.products[id].count <= 0) return;
 
     const product = products[id];
 
