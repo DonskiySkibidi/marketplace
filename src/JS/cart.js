@@ -1,27 +1,46 @@
+import { saveProducts } from "./products.js";
+
+const STORAGE_KEY_CART = "space-app-cart";
 
 export class Cart {
-  constructor(productGridID, cartItemsID, totalCountID, totalSumID, onChangeCallback, products) {
+  constructor(
+    productGridID,
+    cartItemsID,
+    totalCountID,
+    totalSumID,
+    onChangeCallback,
+    products,
+  ) {
     this.goods = document.getElementById(productGridID);
     this.itemsCart = document.getElementById(cartItemsID);
     this.totalCountElem = document.getElementById(totalCountID);
     this.totalSumElem = document.getElementById(totalSumID);
     this.products = products;
-    this.cart = new Map();
+    this.cart = new Map(this._loadCart());
     this.onChangeCallback = onChangeCallback;
     this._bindClick();
+    this.walkCart();
+  }
+
+  getProductIndex(id) {
+    return this.products.findIndex((item) => item.id === Number(id));
+  }
+
+  getProductById(id) {
+    const index = this.getProductIndex(id);
+    return index === -1 ? null : this.products[index];
   }
 
   addToCart(button) {
     const id = button.dataset.id;
-    if (!id || !this.products[id] || this.products[id].count <= 0) return;
-
-    const product = products[id];
+    const product = this.getProductById(id);
+    if (!product || product.count <= 0) return;
 
     if (this.cart.has(id)) {
       const currentItem = this.cart.get(id);
       this.cart.set(id, {
         ...currentItem,
-        count: currentItem.count + 1
+        count: currentItem.count + 1,
       });
     } else {
       this.cart.set(id, {
@@ -32,7 +51,10 @@ export class Cart {
     }
 
     product.count--;
+    this._saveCart();
+    saveProducts(this.products);
     this.onChangeCallback?.();
+    this.walkCart();
   }
 
   generateHTML(id, { name, count, price }) {
@@ -41,7 +63,10 @@ export class Cart {
     item.setAttribute("data-id", id);
 
     const img = document.createElement("img");
-    img.setAttribute("src", "./src/assets/img/cf6894517fbcbad9f2749d254bf550c0.png");
+    img.setAttribute(
+      "src",
+      "./src/assets/img/cf6894517fbcbad9f2749d254bf550c0.png",
+    );
     img.setAttribute("alt", "productImg");
 
     const details = this.generateDetails({ name, count, price });
@@ -60,10 +85,10 @@ export class Cart {
 
     const h3 = document.createElement("h3");
     h3.innerText = name;
-    
+
     const p = document.createElement("p");
-    p.innerText = `${price} руб. x ${count} шт.`; 
-    
+    p.innerText = `${price} руб. x ${count} шт.`;
+
     itemDetails.append(h3, p);
     return itemDetails;
   }
@@ -78,15 +103,14 @@ export class Cart {
     let count = 0;
     let sum = 0;
 
-
     for (const [id, obj] of this.cart.entries()) {
       const elem = this.generateHTML(id, obj);
       this.itemsCart.append(elem);
-      
+
       count += obj.count;
-      sum += obj.price * obj.count; 
+      sum += obj.price * obj.count;
     }
-    
+
     this.generateTotals(count, sum);
   }
 
@@ -94,12 +118,36 @@ export class Cart {
     const id = item.dataset.id;
     if (!id || !this.cart.has(id)) return;
 
-    const count = this.cart.get(id).count;
-    this.cart.delete(id);
-    products[id].count += count;
+    const cartItem = this.cart.get(id);
+    const product = this.getProductById(id);
+    if (!product) return;
 
-    this.walkCart();
+    this.cart.delete(id);
+    product.count += cartItem.count;
+
+    this._saveCart();
+    saveProducts(this.products);
     this.onChangeCallback?.();
+    this.walkCart();
+  }
+
+  _loadCart() {
+    const raw = localStorage.getItem(STORAGE_KEY_CART);
+    if (!raw) return [];
+
+    try {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
+
+  _saveCart() {
+    localStorage.setItem(
+      STORAGE_KEY_CART,
+      JSON.stringify([...this.cart.entries()]),
+    );
   }
 
   _bindClick() {
@@ -107,7 +155,6 @@ export class Cart {
       const targetButton = event.target.closest(".addToBasket");
       if (targetButton) {
         this.addToCart(targetButton);
-        this.walkCart();
       }
     });
 

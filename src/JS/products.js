@@ -1,23 +1,53 @@
-export let products = [
-    {   
-        id: 0,
-        name: "Гин Ичимару",
-        price: 2000,
-        count: 5,
-        img: "./src/assets/img/cf6894517fbcbad9f2749d254bf550c0.png"
-    },
-    {   
-        id: 1,
-        name: "Скибиди",
-        price: 20,
-        count: 10,
-        img: "./src/assets/img/cf6894517fbcbad9f2749d254bf550c0.png"
-    },
-    {
-        id: 2,
-        name: "Лол",
-        price: 5000,
-        count: 42,
-        img: "./src/assets/img/cf6894517fbcbad9f2749d254bf550c0.png"
-    }
+const STORAGE_KEY_PRODUCTS = "space-app-products";
+
+const defaultProducts = [
+  {
+    id: 0,
+    name: "Гин Ичимару",
+    price: 2000,
+    count: 5,
+    img: "./src/assets/img/cf6894517fbcbad9f2749d254bf550c0.png",
+  },
+  {
+    id: 1,
+    name: "Скибиди",
+    price: 20,
+    count: 10,
+    img: "./src/assets/img/cf6894517fbcbad9f2749d254bf550c0.png",
+  },
+  {
+    id: 2,
+    name: "Лол",
+    price: 5000,
+    count: 42,
+    img: "./src/assets/img/cf6894517fbcbad9f2749d254bf550c0.png",
+  },
 ];
+
+function loadProducts() {
+  const saved = localStorage.getItem(STORAGE_KEY_PRODUCTS);
+  if (!saved) return defaultProducts.map((item) => ({ ...item }));
+
+  try {
+    const parsed = JSON.parse(saved);
+    return Array.isArray(parsed)
+      ? parsed
+      : defaultProducts.map((item) => ({ ...item }));
+  } catch {
+    return defaultProducts.map((item) => ({ ...item }));
+  }
+}
+
+export const products = loadProducts();
+
+export function saveProducts(data) {
+  localStorage.setItem(STORAGE_KEY_PRODUCTS, JSON.stringify(data));
+}
+
+export function findProductById(id) {
+  return products.find((item) => item.id === Number(id));
+}
+
+export function getProductIndex(id) {
+  return products.findIndex((item) => item.id === Number(id));
+}
