@@ -83,6 +83,7 @@ main {
   display: flex;
   flex-flow: column;
   align-items: center;
+  justify-content: space-between;
 
   background: rgba(255, 255, 255, 0.45);
   backdrop-filter: blur(12px);
@@ -133,9 +134,12 @@ main {
 .product img {
   border-radius: 5px;
   max-height: 250px;
+  min-height: 200px;
   margin-top: 5px;
-  width: auto;
+  max-width: 90%;
+  min-width: 80%;
   object-fit: contain;
+
 }
 .product-desc button {
   border-radius: 25px;

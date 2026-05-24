@@ -47,6 +47,7 @@ export class Cart {
         name: product.name,
         count: 1,
         price: product.price,
+        img: product.img,
       });
     }
 
