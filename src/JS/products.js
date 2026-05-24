@@ -6,21 +6,21 @@ const defaultProducts = [
     name: "Гин Ичимару",
     price: 2000,
     count: 5,
-    img: "cf6894517fbcbad9f2749d254bf550c0.png",
+    img: "gin.png",
   },
   {
     id: 1,
     name: "Скибиди",
     price: 20,
     count: 10,
-    img: "cf6894517fbcbad9f2749d254bf550c0.png",
+    img: "pig.png",
   },
   {
     id: 2,
     name: "Лол",
     price: 5000,
     count: 42,
-    img: "cf6894517fbcbad9f2749d254bf550c0.png",
+    img: "ussop.png",
   },
 ];
 
