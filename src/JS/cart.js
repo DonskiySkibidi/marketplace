@@ -57,18 +57,18 @@ export class Cart {
     this.walkCart();
   }
 
-  generateHTML(id, { name, count, price,img}) {
+  generateHTML(id, { name, count, price, img}) {
     const item = document.createElement("div");
     item.classList.add("cart-item");
     item.setAttribute("data-id", id);
 
-    const img = document.createElement("img");
+    const productImg = document.createElement("img");
     const fullImagePath = `${import.meta.env.BASE_URL}images/${img}`;
-    img.setAttribute(
+    productImg.setAttribute(
       "src",
       fullImagePath || null
     );
-    img.setAttribute("alt", "productImg");
+    productImg.setAttribute("alt", "productImg");
     
 
     const details = this.generateDetails({ name, count, price });
@@ -77,7 +77,7 @@ export class Cart {
     closeButton.classList.add("remove-item");
     closeButton.innerHTML = "&times;";
 
-    item.append(img, details, closeButton);
+    item.append(productImg, details, closeButton);
     return item;
   }
 
