@@ -9,11 +9,8 @@ export class GenerateProducts {
     divProduct.className = "product";
 
     const img = document.createElement("img");
-    const fullImagePath = `${import.meta.env.BASE_URL}images/${good.img}`;
-    img.setAttribute(
-      "src",
-      fullImagePath || null
-    );
+    const fullImagePath = `${import.meta.env.BASE_URL}img/${good.img}`;
+    img.setAttribute("src", fullImagePath || null);
     img.setAttribute("alt", "productImg");
     divProduct.append(img);
     const desc = this.generateDesc(good);

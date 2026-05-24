@@ -57,19 +57,15 @@ export class Cart {
     this.walkCart();
   }
 
-  generateHTML(id, { name, count, price, img}) {
+  generateHTML(id, { name, count, price, img }) {
     const item = document.createElement("div");
     item.classList.add("cart-item");
     item.setAttribute("data-id", id);
 
     const productImg = document.createElement("img");
-    const fullImagePath = `${import.meta.env.BASE_URL}images/${img}`;
-    productImg.setAttribute(
-      "src",
-      fullImagePath || null
-    );
+    const fullImagePath = `${import.meta.env.BASE_URL}img/${img}`;
+    productImg.setAttribute("src", fullImagePath || null);
     productImg.setAttribute("alt", "productImg");
-    
 
     const details = this.generateDetails({ name, count, price });
 
@@ -81,7 +77,7 @@ export class Cart {
     return item;
   }
 
-  generateDetails({ name, count, price}) {
+  generateDetails({ name, count, price }) {
     const itemDetails = document.createElement("div");
     itemDetails.classList.add("item-details");
 
