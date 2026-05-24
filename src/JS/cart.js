@@ -57,17 +57,19 @@ export class Cart {
     this.walkCart();
   }
 
-  generateHTML(id, { name, count, price }) {
+  generateHTML(id, { name, count, price,img}) {
     const item = document.createElement("div");
     item.classList.add("cart-item");
     item.setAttribute("data-id", id);
 
     const img = document.createElement("img");
+    const fullImagePath = `${import.meta.env.BASE_URL}images/${img}`;
     img.setAttribute(
       "src",
-      "./src/assets/img/cf6894517fbcbad9f2749d254bf550c0.png",
+      fullImagePath || null
     );
     img.setAttribute("alt", "productImg");
+    
 
     const details = this.generateDetails({ name, count, price });
 
@@ -79,7 +81,7 @@ export class Cart {
     return item;
   }
 
-  generateDetails({ name, count, price }) {
+  generateDetails({ name, count, price}) {
     const itemDetails = document.createElement("div");
     itemDetails.classList.add("item-details");
 
