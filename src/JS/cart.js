@@ -15,20 +15,15 @@ export class Cart {
     this.itemsCart = document.getElementById(cartItemsID);
     this.totalCountElem = document.getElementById(totalCountID);
     this.totalSumElem = document.getElementById(totalSumID);
-    this.products = products;
+    this.products = new Map(products);
     this.cart = new Map(this._loadCart());
     this.onChangeCallback = onChangeCallback;
     this._bindClick();
     this.walkCart();
   }
 
-  getProductIndex(id) {
-    return this.products.findIndex((item) => item.id === Number(id));
-  }
-
   getProductById(id) {
-    const index = this.getProductIndex(id);
-    return index === -1 ? null : this.products[index];
+    return this.products.get(Number(id)) || null;
   }
 
   addToCart(button) {

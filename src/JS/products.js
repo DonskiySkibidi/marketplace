@@ -1,3 +1,4 @@
+// copilot
 const STORAGE_KEY_PRODUCTS = "space-app-products";
 
 const defaultProducts = [
@@ -24,6 +25,7 @@ const defaultProducts = [
   },
 ];
 
+// copilot
 function loadProducts() {
   const saved = localStorage.getItem(STORAGE_KEY_PRODUCTS);
   if (!saved) return defaultProducts.map((item) => ({ ...item }));
@@ -38,16 +40,21 @@ function loadProducts() {
   }
 }
 
-export const products = loadProducts();
+// copilot
+const rawProductsArray = loadProducts();
 
-export function saveProducts(data) {
-  localStorage.setItem(STORAGE_KEY_PRODUCTS, JSON.stringify(data));
+export const products = new Map(
+  rawProductsArray.map((item) => [item.id, item]),
+);
+
+// Функция сохранения теперь должна превращать Map обратно в строку JSON
+export function saveProducts() {
+  // products.values() достает чистые объекты товаров, делаем из них массив и сохраняем
+  const arrayToSave = Array.from(products.values());
+  localStorage.setItem(STORAGE_KEY_PRODUCTS, JSON.stringify(arrayToSave));
 }
 
+// Теперь вместо find и findIndex у нас мгновенный поиск по ключу!
 export function findProductById(id) {
-  return products.find((item) => item.id === Number(id));
-}
-
-export function getProductIndex(id) {
-  return products.findIndex((item) => item.id === Number(id));
+  return products.get(Number(id)) || null;
 }
