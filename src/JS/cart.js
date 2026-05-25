@@ -52,7 +52,28 @@ export class Cart {
     this.onChangeCallback?.();
     this.walkCart();
   }
+  removeFromCart(button) {
+    const id = button.dataset.id;
+    const product = this.getProductById(id);
+    if (!product) return;
+    const currentItem = this.cart.get(id);
+    if (!currentItem) return;
+    if (currentItem.count === 1) {
+      this.removeItem(button);
+      return;
+    }
+    this.cart.set(id, {
+      ...currentItem,
+      count: currentItem.count - 1,
+    });
 
+    product.count++;
+
+    this._saveCart();
+    saveProducts(this.products);
+    this.onChangeCallback?.();
+    this.walkCart();
+  }
   generateHTML(id, { name, count, price, img }) {
     const item = document.createElement("div");
     item.classList.add("cart-item");
@@ -146,12 +167,17 @@ export class Cart {
 
   _bindClick() {
     this.goods.addEventListener("click", (event) => {
-      const targetButton = event.target.closest(".addToBasket");
-      if (targetButton) {
-        this.addToCart(targetButton);
+      const addBtn = event.target.closest(".addToBasket");
+      const removeBtn = event.target.closest(".removeFromBasket");
+
+      if (addBtn) {
+        this.addToCart(addBtn);
+      }
+
+      if (removeBtn) {
+        this.removeFromCart(removeBtn);
       }
     });
-
     this.itemsCart.addEventListener("click", (event) => {
       const closeButton = event.target.closest(".remove-item");
       if (!closeButton) return;

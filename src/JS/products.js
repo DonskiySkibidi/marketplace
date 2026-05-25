@@ -40,21 +40,17 @@ function loadProducts() {
   }
 }
 
-// copilot
 const rawProductsArray = loadProducts();
 
 export const products = new Map(
   rawProductsArray.map((item) => [item.id, item]),
 );
 
-// Функция сохранения теперь должна превращать Map обратно в строку JSON
 export function saveProducts() {
-  // products.values() достает чистые объекты товаров, делаем из них массив и сохраняем
   const arrayToSave = Array.from(products.values());
   localStorage.setItem(STORAGE_KEY_PRODUCTS, JSON.stringify(arrayToSave));
 }
 
-// Теперь вместо find и findIndex у нас мгновенный поиск по ключу!
 export function findProductById(id) {
   return products.get(Number(id)) || null;
 }

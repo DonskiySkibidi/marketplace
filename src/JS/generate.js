@@ -33,14 +33,30 @@ export class GenerateProducts {
     const sum = document.createElement("h5");
     sum.innerText = `${good.price} рублей`;
 
-    const button = document.createElement("button");
-    button.className = "addToBasket";
-    button.setAttribute("data-id", `${good.id}`);
-    button.innerText = "В корзину";
+    const button = this.generateButton(good);
 
     toBasket.append(sum, button);
     productDesc.append(name, count, toBasket);
     return productDesc;
+  }
+  generateButton(good) {
+    const div = document.createElement("div");
+    div.className = "productInCartButtons";
+
+    const button1 = document.createElement("button");
+    const button2 = document.createElement("button");
+
+    button1.innerText = "Add";
+    button1.setAttribute("data-id", `${good.id}`);
+    button1.className = "addToBasket";
+
+    button2.innerText = "Remove";
+    button2.setAttribute("data-id", `${good.id}`);
+    button2.className = "removeFromBasket";
+
+    div.append(button1, button2);
+
+    return div;
   }
   render(products) {
     this.where.innerHTML = "";
