@@ -1,4 +1,3 @@
-// copilot
 const STORAGE_KEY_PRODUCTS = "space-app-products";
 
 const defaultProducts = [
@@ -25,7 +24,6 @@ const defaultProducts = [
   },
 ];
 
-// copilot
 function loadProducts() {
   const saved = localStorage.getItem(STORAGE_KEY_PRODUCTS);
   if (!saved) return defaultProducts.map((item) => ({ ...item }));

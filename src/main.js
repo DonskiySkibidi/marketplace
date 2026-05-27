@@ -4,6 +4,7 @@ import { Modal } from "./JS/modal.js";
 import { Cart } from "./JS/cart.js";
 import { GenerateProducts } from "./JS/generate.js";
 import { products } from "./JS/products.js";
+import { AddProduct } from "./JS/addProduct.js";
 
 const cartModal = new Modal("cart-modal", "cart-button", "cartClose");
 const createProductModal = new Modal(
@@ -19,6 +20,14 @@ const cart = new Cart(
   "cart-items",
   "totalCountID",
   "totalSumID",
+  () => {
+    generate.render(products);
+  },
+  products,
+);
+
+const addProduct = new AddProduct(
+  "addProductForm",
   () => {
     generate.render(products);
   },

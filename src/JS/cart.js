@@ -48,7 +48,7 @@ export class Cart {
 
     product.count--;
     this._saveCart();
-    saveProducts(this.products);
+    saveProducts();
     this.onChangeCallback?.();
     this.walkCart();
   }

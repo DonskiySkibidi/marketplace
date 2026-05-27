@@ -169,15 +169,18 @@ main {
 }
 .productInCartButtons {
   display: flex;
-  flex-flow: row; /* В одну строку */
+  flex-flow: row;
   gap: 10px;
   margin-top: 10px;
 }
 .productInCartButtons button {
-  flex: 1; /* Кнопки поделят место поровну */
+  flex: 1;
   padding: 8px;
 }
-
+.productInCartButtons button.disabled {
+  cursor: not-allowed;
+  background-color: var(--darkBlue);
+}
 /* cart */
 .modal {
   position: fixed;
@@ -218,6 +221,8 @@ main {
   padding: 20px;
   max-height: 400px;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.6) transparent;
 }
 .cart-item {
   display: flex;
@@ -337,6 +342,14 @@ main {
   box-shadow:
     0 4px 16px 0 rgba(0, 0, 0, 0.04),
     inset 0 0 0 1px rgba(149, 7, 64, 0.5);
+}
+#addProductForm input[type="number"] {
+  -moz-appearance: textfield;
+}
+#addProductForm input[type="number"]::-webkit-outer-spin-button,
+#addProductForm input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 #addProductForm input:focus {
   outline: none;
