@@ -32,4 +32,5 @@ const addProduct = new AddProduct(
     generate.render(products);
   },
   products,
+  cart,
 );

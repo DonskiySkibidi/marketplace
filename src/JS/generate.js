@@ -9,7 +9,12 @@ export class GenerateProducts {
     divProduct.className = "product";
 
     const img = document.createElement("img");
-    const fullImagePath = `${import.meta.env.BASE_URL}img/${good.img}`;
+    let fullImagePath;
+    if (good.img.startsWith("data:")) {
+      fullImagePath = `${good.img}`;
+    } else {
+      fullImagePath = `${import.meta.env.BASE_URL}img/${good.img}`;
+    }
     img.setAttribute("src", fullImagePath || null);
     img.setAttribute("alt", "productImg");
     divProduct.append(img);

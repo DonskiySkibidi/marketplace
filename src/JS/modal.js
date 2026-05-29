@@ -13,13 +13,14 @@ export class Modal {
   }
   open() {
     if (this.modal) {
+      document.body.style.overflowY = "hidden";
       this.modal.classList.add("is-Open");
       document.addEventListener("keydown", this._handleEsc);
     }
   }
-
   close() {
     if (this.modal) {
+      document.body.style.overflowY = "";
       this.modal.classList.remove("is-Open");
       document.removeEventListener("keydown", this._handleEsc);
     }

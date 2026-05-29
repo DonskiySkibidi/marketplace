@@ -15,15 +15,23 @@ export class Cart {
     this.itemsCart = document.getElementById(cartItemsID);
     this.totalCountElem = document.getElementById(totalCountID);
     this.totalSumElem = document.getElementById(totalSumID);
-    this.products = new Map(products);
+    this._products = new Map(products);
     this.cart = new Map(this._loadCart());
     this.onChangeCallback = onChangeCallback;
     this._bindClick();
     this.walkCart();
   }
-
+  set products(products) {
+    this._products = new Map(products);
+  }
   getProductById(id) {
-    return this.products.get(Number(id)) || null;
+    return this._products.get(Number(id)) || null;
+  }
+  getImagePath(imgName) {
+    if (imgName.startsWith("data:") || imgName.startsWith("blob:")) {
+      return imgName;
+    }
+    return `${import.meta.env.BASE_URL}img/${imgName}`;
   }
 
   addToCart(button) {
@@ -48,7 +56,7 @@ export class Cart {
 
     product.count--;
     this._saveCart();
-    saveProducts();
+    saveProducts(this._products);
     this.onChangeCallback?.();
     this.walkCart();
   }
@@ -70,7 +78,7 @@ export class Cart {
     product.count++;
 
     this._saveCart();
-    saveProducts(this.products);
+    saveProducts(this._products);
     this.onChangeCallback?.();
     this.walkCart();
   }
@@ -80,7 +88,7 @@ export class Cart {
     item.setAttribute("data-id", id);
 
     const productImg = document.createElement("img");
-    const fullImagePath = `${import.meta.env.BASE_URL}img/${img}`;
+    const fullImagePath = this.getImagePath(img);
     productImg.setAttribute("src", fullImagePath || null);
     productImg.setAttribute("alt", "productImg");
 
@@ -141,7 +149,7 @@ export class Cart {
     product.count += cartItem.count;
 
     this._saveCart();
-    saveProducts(this.products);
+    saveProducts(this._products);
     this.onChangeCallback?.();
     this.walkCart();
   }
@@ -166,7 +174,7 @@ export class Cart {
   }
 
   _bindClick() {
-    this.goods.addEventListener("click", (event) => {
+    document.body.addEventListener("click", (event) => {
       const addBtn = event.target.closest(".addToBasket");
       const removeBtn = event.target.closest(".removeFromBasket");
 
