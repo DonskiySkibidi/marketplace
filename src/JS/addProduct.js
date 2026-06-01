@@ -1,5 +1,3 @@
-import { saveProducts } from "./products.js";
-
 export class AddProduct {
   constructor(formID, onChangeCallback, product, cartToUpdate) {
     this.formElement = document.getElementById(formID);
@@ -9,16 +7,6 @@ export class AddProduct {
     this._bind();
   }
 
-  getNewID() {
-    if (this.products.size === 0) return 0;
-    return Math.max(...this.products.keys()) + 1;
-  }
-  saveInProduct(info) {
-    this.products.set(info.id, info);
-    saveProducts();
-    this.onChangeCallback?.();
-    this.formElement.reset();
-  }
   fileToBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -27,6 +15,7 @@ export class AddProduct {
       reader.onerror = (error) => reject(error);
     });
   }
+
   async getInputs() {
     const formData = new FormData(this.formElement);
     const file = formData.get("product-image");
@@ -42,7 +31,6 @@ export class AddProduct {
     }
 
     return {
-      id: this.getNewID(),
       name: formData.get("product-name") || "Без названия",
       price: Number(formData.get("product-price")) || 0,
       count: Number(formData.get("product-count")) || 0,
@@ -56,8 +44,28 @@ export class AddProduct {
 
       const info = await this.getInputs();
 
-      this.saveInProduct(info);
-      this.cartToUpdate.products = this.products;
+      try {
+        const response = await fetch(
+          `https://6a1d89e7bcc4f20d5ca4be72.mockapi.io/shop/products`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(info),
+          },
+        );
+
+        if (response.ok) {
+          const createdProduct = await response.json();
+
+          this.products.set(String(createdProduct.id), createdProduct);
+          this.cartToUpdate.products = this.products;
+
+          this.onChangeCallback?.();
+          this.formElement.reset();
+        }
+      } catch (error) {
+        console.error("Ошибка сети при добавлении товара:", error);
+      }
     });
   }
 }

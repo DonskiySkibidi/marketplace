@@ -1,4 +1,19 @@
-import { saveProducts } from "./products.js";
+async function saveProductOnServer(id, product) {
+  try {
+    const response = await fetch(
+      `https://6a1d89e7bcc4f20d5ca4be72.mockapi.io/shop/products/${id}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(product),
+      },
+    );
+
+    if (!response.ok) throw new Error(`Не удалось обновить товар на сервере`);
+  } catch (error) {
+    console.error("Ошибка сети при сохранении товара:", error);
+  }
+}
 
 const STORAGE_KEY_CART = "space-app-cart";
 
@@ -21,12 +36,15 @@ export class Cart {
     this._bindClick();
     this.walkCart();
   }
+
   set products(products) {
     this._products = new Map(products);
   }
+
   getProductById(id) {
-    return this._products.get(Number(id)) || null;
+    return this._products.get(String(id)) || null;
   }
+
   getImagePath(imgName) {
     if (imgName.startsWith("data:") || imgName.startsWith("blob:")) {
       return imgName;
@@ -56,10 +74,13 @@ export class Cart {
 
     product.count--;
     this._saveCart();
-    saveProducts(this._products);
+
+    saveProductOnServer(id, product);
+
     this.onChangeCallback?.();
     this.walkCart();
   }
+
   removeFromCart(button) {
     const id = button.dataset.id;
     const product = this.getProductById(id);
@@ -78,10 +99,11 @@ export class Cart {
     product.count++;
 
     this._saveCart();
-    saveProducts(this._products);
+    saveProductOnServer(id, product);
     this.onChangeCallback?.();
     this.walkCart();
   }
+
   generateHTML(id, { name, count, price, img }) {
     const item = document.createElement("div");
     item.classList.add("cart-item");
@@ -149,7 +171,7 @@ export class Cart {
     product.count += cartItem.count;
 
     this._saveCart();
-    saveProducts(this._products);
+    saveProductOnServer(id, product);
     this.onChangeCallback?.();
     this.walkCart();
   }
@@ -157,7 +179,6 @@ export class Cart {
   _loadCart() {
     const raw = localStorage.getItem(STORAGE_KEY_CART);
     if (!raw) return [];
-
     try {
       const parsed = JSON.parse(raw);
       return Array.isArray(parsed) ? parsed : [];
@@ -178,14 +199,10 @@ export class Cart {
       const addBtn = event.target.closest(".addToBasket");
       const removeBtn = event.target.closest(".removeFromBasket");
 
-      if (addBtn) {
-        this.addToCart(addBtn);
-      }
-
-      if (removeBtn) {
-        this.removeFromCart(removeBtn);
-      }
+      if (addBtn) this.addToCart(addBtn);
+      if (removeBtn) this.removeFromCart(removeBtn);
     });
+
     this.itemsCart.addEventListener("click", (event) => {
       const closeButton = event.target.closest(".remove-item");
       if (!closeButton) return;
